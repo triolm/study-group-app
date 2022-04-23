@@ -1,0 +1,56 @@
+<% layout('layouts/boilerplate')%>
+    <title>View Note</title>
+
+    <body>
+        <div class="row">
+            <div class="card offset-2 col-8 col-md-6 offset-md-3 p-0">
+                <div class="card-body">
+                    <% if(note.dueDate && !note.isCompleted) { %> 
+                    <p class="m-0 card-text text-danger">
+                       Due <%= timeAgo.format(new Date(note.dueDate)) %>
+                    </p>
+                    <% } %> 
+                    <h5 class="card-title mt-0">
+                        <%= note.title %> <span class="text-muted">- <%=note.author.username%></span>
+                    </h5>
+                    <div class="text-muted">
+                        <p class="card-text" style="white-space: pre-line;"><%- md.renderInline(note.body) %>
+                        </p>
+                    </div>
+                    <div class="m-auto py-2">
+                        <a class="my-1 btn btn-primary" href="/notes">Back to All Notes</a>
+                        <% if(parseInt(currentUser._id)==parseInt(note.author._id)){ %>
+                            <a class="my-1 btn btn-primary" href="/notes/<%=note._id%>/edit">Edit Note</a>
+                            <a class="my-1 btn btn-success " href="/notes/<%=note._id%>/share">Share</a>
+                            <form class="d-inline" action="/notes/<%=note._id%>?_method=DELETE" method="POST">
+                                <button class="my-1 btn btn-danger">Delete Note</button>
+                            </form>
+                            <% } %>
+                            <% if(note.dueDate > 0){ %> 
+                            <form class="d-inline" action="/notes/<%=note._id%>?_method=PATCH" method="POST">
+                                <button class="my-1 btn btn-success">
+                                    <% if(note.isCompleted){ %>
+                                    Not Done
+                                    <% }else{ %>
+                                        Done 
+                                        <% } %> 
+                                </button>
+                            </form>
+                            <% } %> 
+                    </div>
+                </div>
+                <div class="card-footer text-muted">
+                    <span title="<%=new Date(note.createDate).toString() %> ">
+                        <%= timeAgo.format(new Date(note.createDate)) %>
+                    </span>
+                    <% if(note.createDate !=note.editDate){ %>
+                        <span title="<%=new Date(note.editDate).toString() %> ">
+                            (edited <%= timeAgo.format(new Date(note.editDate)) %>)
+                        </span>
+                        <% } %>
+                </div>
+            </div>
+        </div>
+    </body>
+
+    </html>

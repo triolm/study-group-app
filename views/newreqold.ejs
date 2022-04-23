@@ -1,0 +1,44 @@
+<title>Log In</title>
+
+<div class="row">
+    <div class="card col-6 offset-3">
+        <form action="/createrequest" method="POST" class="needs-validation" novalidate>
+            <div class="card-body">
+                <h2 class="pb-3">New Request</h2>
+                <div class="mb-3">
+                    <label for="title" class="form-label">title</label>
+                    <input type="text" class="form-control" id="title" name="title" placeholder="title" required>
+                </div>
+                <div class="mb-3">
+                    <label for="body" class="form-label">body</label>
+                    <input type="text" class="form-control" id="body" name="body" placeholder="body" required>
+                </div>
+                <div class="mb-3">
+                    <label for="className" class="form-label">className</label>
+                    <input type="text" class="form-control" id="className" name="className" placeholder="className"
+                        required>
+                </div>
+                <div class="mb-3">
+                    <label for="department" class="form-label">department</label>
+                    <input type="text" class="form-control" id="department" name="department" placeholder="department"
+                        required>
+                </div>
+                <div class="mb-3">
+                    <label for="date" class="form-label">date (unix)</label>
+                    <input type="text" class="form-control" id="date" name="date" placeholder="date" required>
+                </div>
+                <div class="mb-3">
+                    <label for="isVirtual" class="form-label">Virtual</label>
+                    <input type="checkbox" class="form-control" id="isVirtual" name="isVirtual" placeholder="isVirtual"
+                        required>
+                </div>
+                <div class="mb-3">
+                    <label for="location" class="form-label">location</label>
+                    <input type="text" class="form-control" id="location" name="location" placeholder="location"
+                        required>
+                </div>
+                <button class="btn btn-primary">Log In</button>
+            </div>
+        </form>
+    </div>
+</div>
