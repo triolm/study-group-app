@@ -14,8 +14,8 @@ router.get("/login", (req, res) => {
 
 router.post('/register', async (req, res) => {
     const { email, username, password } = req.body;
-    const user = new User({ email, username })
-    const registeredUser = await User.register(user, password);
+    const user = new User({ email, username, isStudent })
+    const registeredUser = await User.register(user, password, isStudent);
     req.login(registeredUser, err => {
         if (err) return next(err);
         res.redirect('/');
