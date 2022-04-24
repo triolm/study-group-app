@@ -13,9 +13,10 @@ router.get("/login", (req, res) => {
 });
 
 router.post('/register', async (req, res) => {
-    const { email, username, password } = req.body;
+    const { email, username, password, isTeacher } = req.body;
+    isStudent = !isTeacher;
     const user = new User({ email, username, isStudent })
-    const registeredUser = await User.register(user, password, isStudent);
+    const registeredUser = await User.register(user, password);
     req.login(registeredUser, err => {
         if (err) return next(err);
         res.redirect('/');
@@ -27,8 +28,8 @@ router.post('/register', async (req, res) => {
 router.get('/logout', isLoggedIn, async (req, res) => {
     await req.logout();
     req.session.user_id = res.user;
-    res.redirect('/')
     req.flash("success", "Logged out.")
+    res.redirect('/')
 });
 
 router.post('/login',

@@ -5,14 +5,11 @@ const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 const User = require('./models/users');
 const GroupRequest = require('./models/request');
-const flash = require('flash');
-const markdownIt = require('markdown-it')
-md = new markdownIt();
-
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
-
-const passportLocalMongoose = require('passport-local-mongoose');
+const flash = require('flash');
+require('dotenv').config();
+port = process.env.PORT || 3000;
 
 // const noteRoutes = require('./routes/notes')
 // const profileRoutes = require('./routes/profile')
@@ -21,7 +18,6 @@ const authRoutes = require('./routes/auth')
 const mongoose = require('mongoose');
 const path = require('path');
 const { isLoggedIn, } = require('./middleware');
-const { request } = require('http');
 
 mongoose.connect('mongodb://localhost:27017/studygroup', { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
@@ -86,7 +82,6 @@ app.get("/createrequest", isLoggedIn, (req, res) => {
 
 app.post("/createrequest", isLoggedIn, (req, res) => {
     const { title, className, department, date, location, isVirtual } = req.body;
-    console.log(isVirtual + "aa")
     groupReq = new GroupRequest({ location, title, className, department, isVirtual: !!isVirtual, date, author: req.user._id, createDate: Date.now(), participants: [req.user._id] });
     groupReq.save();
     res.redirect('/mygroups');
@@ -95,6 +90,7 @@ app.post("/addroom/", isLoggedIn, async (req, res) => {
     const toAdd = await GroupRequest.findById(req.body.id);
     toAdd.participants.push(req.user._id);
     toAdd.save();
+    req.flash("success", "Sucessfully joined room.")
     res.redirect('/mygroups')
 })
 
@@ -103,7 +99,6 @@ app.get("/mygroups", isLoggedIn, async (req, res) => {
         participants: req.user._id
 
     }).populate("participants").populate("author");
-    console.log(rooms)
     res.render('mystudygroups', { rooms })
 })
 
@@ -111,6 +106,6 @@ app.all('*', (req, res) => {
     res.send("error")
 })
 
-app.listen(3000, () => {
-    console.log("listening on port 3000")
+app.listen(port, () => {
+    console.log(`listening on port ${port}`)
 });

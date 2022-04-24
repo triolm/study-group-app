@@ -13,9 +13,17 @@
         crossorigin="anonymous"></script>
 </head>
 
-<body style="height:100vh;">
+<body style="overflow-x: hidden;">
     <%- include('../partials/navbar')%>
-        <%-body %>
+        <% while(flash.length){ %>
+            <div class="alert alert-<%=flash[0].type%> mt-3 alert-dismissible fade show col-8 offset-2" role="alert">
+                <%=flash[0].message%>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <% flash.shift() %>
+                <% } %>
+                    <%-body %>
+                        <%- include('../partials/footer')%>
 
 </body>
 
